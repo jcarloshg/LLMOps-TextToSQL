@@ -83,3 +83,18 @@ Here are **3 High-Signal Use Cases** designed for a local environment. Each high
 | **6. Monitoring** | **Task:** Log every "Blocked" message. "The AI tried to say X, but we blocked it." <br>
 
 <br> **Tool:** **Prometheus** + **Grafana** (Dashboard: "Safety Violations per Hour"). |
+
+# Next steps
+
+## phase 01
+
+```bash
+# install the model from ollama
+docker exec -it sql_model_server ollama pull qwen2.5-coder:7b
+
+# install requeriments for the lab
+docker exec sql_lab_runner pip install -r requirements.txt
+
+# run script src/baseline_check.py
+docker exec sql_lab_runner python src/baseline_check.py
+```
