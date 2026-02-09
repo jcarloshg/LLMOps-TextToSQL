@@ -1,0 +1,41 @@
+services:
+  # Service 1: The Model Server (Ollama)
+  ollama-service:
+    image: ollama/ollama:latest
+    container_name: sql_model_server
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama # Persist models so you don't re-download them
+    networks:
+      - sql_network
+    # Uncomment the deploy section below if you have an NVIDIA GPU & Toolkit installed
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # # Service 2: The Client/Lab Environment
+  lab-runner:
+    image: python:3.10-slim
+    container_name: sql_lab_runner
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: tail -f /dev/null # Keep container running indefinitely
+    environment:
+      - OLLAMA_HOST=http://ollama-service:11434
+    networks:
+      - sql_network
+    depends_on:
+      - ollama-service
+
+volumes:
+  ollama_data:
+
+networks:
+  sql_network:
+    driver: bridge
