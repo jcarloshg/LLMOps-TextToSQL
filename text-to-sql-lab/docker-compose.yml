@@ -25,7 +25,7 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: tail -f /dev/null # Keep container running indefinitely
+    command: sh -c "apt-get update && apt-get install -y git && git config --global init.defaultBranch main && git config --global user.email \"carlosj12336@gmail.com\" && git config --global user.name \"jcarloshg\" && tail -f /dev/null"
     environment:
       - OLLAMA_HOST=http://ollama-service:11434
     networks:

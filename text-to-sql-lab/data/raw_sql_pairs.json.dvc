@@ -1,0 +1,5 @@
+outs:
+- md5: e866625eedd589642bfaf7077f4c9632
+  size: 11325
+  hash: md5
+  path: raw_sql_pairs.json
