@@ -98,3 +98,28 @@ docker exec sql_lab_runner pip install -r requirements.txt
 # run script src/baseline_check.py
 docker exec sql_lab_runner python src/baseline_check.py
 ```
+
+## pahse 02
+
+```bash
+# re-build
+docker compose up -d --build
+
+
+#
+# 1. Initialize Git (DVC requires git)
+#
+git init
+
+# 2. Initialize DVC
+dvc init
+
+# 3. Create a "Local Remote" (Simulates S3 bucket on your hard drive)
+mkdir -p /tmp/dvc-storage
+dvc remote add -d mylocal /tmp/dvc-storage
+
+# 4. Commit setup
+git add .
+git commit -m "Initialize DVC with local remote"
+
+```
