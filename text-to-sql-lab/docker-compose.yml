@@ -33,6 +33,35 @@ services:
     depends_on:
       - ollama-service
 
+  # Service 3: MLflow Tracking Server
+  mlflow-server:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: sql_mlflow
+    ports:
+      - "5000:5000"
+    command: mlflow server --host 0.0.0.0 --port 5000
+    volumes:
+      - ./mlruns:/mlruns # Persist experiment data
+
+  # Service 4: Unsloth GPU Trainer
+  unsloth-trainer:
+    image: unsloth/unsloth:latest
+    container_name: sql_unsloth_trainer
+    volumes:
+      - .:/workspace/work
+    working_dir: /workspace/work
+    # GPU Pass-through (Requires nvidia-container-toolkit on host)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    command: tail -f /dev/null
+
 volumes:
   ollama_data:
 

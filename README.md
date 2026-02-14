@@ -123,3 +123,16 @@ git add .
 git commit -m "Initialize DVC with local remote"
 
 ```
+
+## Phase 03
+
+```bash
+# run this to get toolkits of nvidia
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+
+# restart
+sudo systemctl restart docker
+
+# run train.py
+sudo docker exec -it sql_unsloth_trainer python src/train.py
+```
