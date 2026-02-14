@@ -83,6 +83,16 @@ services:
     networks:
       - sql_network
 
+  # Service 6: Arize Phoenix (Observability UI and Collector)
+  phoenix:
+    image: arizephoenix/phoenix:latest
+    container_name: sql_phoenix
+    ports:
+      - "6006:6006" # UI & HTTP Tracing Collector
+      - "4317:4317" # gRPC Tracing Collector
+    networks:
+      - sql_network
+
 volumes:
   ollama_data:
 
