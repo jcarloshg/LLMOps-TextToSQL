@@ -136,3 +136,10 @@ sudo systemctl restart docker
 # run train.py
 sudo docker exec -it sql_unsloth_trainer python src/train.py
 ```
+
+## Phase 05
+
+```bash
+# run as sql
+sudo docker exec -it -u root sql_unsloth_trainer python src/export_model.py
+```

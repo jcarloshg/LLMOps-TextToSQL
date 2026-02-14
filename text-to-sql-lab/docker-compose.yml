@@ -7,6 +7,8 @@ services:
       - "11435:11434"
     volumes:
       - ollama_data:/root/.ollama # Persist models so you don't re-download them
+      - .:/app # Share project directory for GGUF files
+    working_dir: /app
     networks:
       - sql_network
     # Uncomment the deploy section below if you have an NVIDIA GPU & Toolkit installed
