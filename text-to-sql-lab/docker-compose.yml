@@ -25,13 +25,15 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: sh -c "apt-get update && apt-get install -y git && git config --global init.defaultBranch main && git config --global user.email \"carlosj12336@gmail.com\" && git config --global user.name \"jcarloshg\" && tail -f /dev/null"
+    command: sh -c "apt-get update && apt-get install -y git && pip install -r requirements.txt && git config --global init.defaultBranch main && git config --global user.email \"carlosj12336@gmail.com\" && git config --global user.name \"jcarloshg\" && tail -f /dev/null"
     environment:
       - OLLAMA_HOST=http://ollama-service:11434
+      - DB_URI=postgresql://testuser:testpass@postgres-db:5432/company_db
     networks:
       - sql_network
     depends_on:
       - ollama-service
+      - postgres-db
 
   # Service 3: MLflow Tracking Server
   mlflow-server:
@@ -42,6 +44,8 @@ services:
     command: mlflow server --host 0.0.0.0 --port 5000
     volumes:
       - ./mlruns:/mlruns # Persist experiment data
+    networks:
+      - sql_network
 
   # Service 4: Unsloth GPU Trainer
   unsloth-trainer:
@@ -61,6 +65,21 @@ services:
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     command: tail -f /dev/null
+    networks:
+      - sql_network
+
+  # Service 5: The Evaluation Database
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: sql_eval_db
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=company_db
+    ports:
+      - "5433:5432"
+    networks:
+      - sql_network
 
 volumes:
   ollama_data:

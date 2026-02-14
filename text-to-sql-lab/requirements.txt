@@ -4,6 +4,11 @@ langchain-community
 langchain-ollama
 dvc
 
+# phase 4
+pandas
+psycopg2-binary
+pytest
+
 
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.3
